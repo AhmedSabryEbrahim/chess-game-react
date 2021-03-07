@@ -1,7 +1,12 @@
 import React, { useReducer, useState } from "react";
 import { renderBoard, initizeBoard } from "./Utilities/BoardUtils";
-import { getCellValueInMatrix, preformMove } from "./Utilities/MovePiece";
-import { validateMove } from "./Utilities/MoveValidation";
+import {
+  getCellValueInMatrix,
+  changeCellInMatrix,
+  preformMove,
+} from "./Utilities/MovePiece";
+import { validateMove, validateSelect } from "./Utilities/MoveValidation";
+import Board from "./Board";
 
 function reducer(state, { x, y }) {
   let currValue = getCellValueInMatrix(state.board, x, y);
@@ -11,10 +16,11 @@ function reducer(state, { x, y }) {
       preformMove(state, state.selected, { x, y });
     }
     state.selected = null;
-  } else if (currValue) state.selected = { x, y };
-  else state.selected = null;
+  } else if (validateSelect(state.board, { x, y }, state.step)) {
+    state.board = changeCellInMatrix(state.board, x, y, "*" + currValue);
+    state.selected = { x, y };
+  } else state.selected = null;
 
-  console.log(state.selected);
   return state;
 }
 
@@ -23,31 +29,34 @@ const Game = () => {
     board: initizeBoard(),
     selected: null,
     step: 0,
-    history: [],
+    whiteHistory: [],
+    blackHistory: [],
   });
 
   const handleSelect = (action) => {
     reducer(state, action);
-    setList(renderBoard(state.board, handleSelect));
-
-    if (state.step > 0) {
-      let historyStep = (
-        <li key={state.step}>{state.history[state.step - 1]}</li>
-      );
-      if (state.step % 2 == 0) setWhiteHistory([...whiteHistory, historyStep]);
-      else setBlackHistory([...blackHistory, historyStep]);
-    }
+    setBoard(renderBoard(state.board, handleSelect));
+    setWhiteHistory(
+      state.whiteHistory
+        ? state.whiteHistory.map((item, key) => <li key={key}>{item}</li>)
+        : null
+    );
+    setBlackHistory(
+      state.blackHistory
+        ? state.blackHistory.map((item, key) => <li key={key}>{item}</li>)
+        : null
+    );
   };
 
-  const [list, setList] = useState(renderBoard(state.board, handleSelect));
-  const [whiteHistory, setWhiteHistory] = useState([]);
-  const [blackHistory, setBlackHistory] = useState([]);
+  const [board, setBoard] = useState(renderBoard(state.board, handleSelect));
+  const [whiteHistoryList, setWhiteHistory] = useState([]);
+  const [blackHistoryList, setBlackHistory] = useState([]);
   return (
-    <div>
-      <div className="whitehistory">{whiteHistory}</div>
-      <div className="board">{list}</div>
-      <div className="blackhistory">{blackHistory}</div>
-    </div>
+    <Board
+      board={board}
+      whiteHistory={whiteHistoryList}
+      blackHistory={blackHistoryList}
+    />
   );
 };
 export default Game;

@@ -11,6 +11,8 @@ const Piece = {
 export function getPieceInfo(value) {
   let piece = Piece.EMPTY;
   let color = null;
+  let selected = false;
+
   if (value) {
     let [pieceColor, pieceChar] = value.split(",");
     switch (pieceChar) {
@@ -36,7 +38,17 @@ export function getPieceInfo(value) {
         piece = Piece.EMPTY;
         break;
     }
+    if (pieceColor.indexOf("*") >= 0) {
+      selected = true;
+      pieceColor = pieceColor[pieceColor.indexOf("*") + 1];
+    }
     color = pieceColor === "B" ? "black" : "white";
   }
-  return [color, piece];
+  return [selected, color, piece];
+}
+
+export function getKingPos(board, color) {
+  let kingPos = null;
+
+  return kingPos;
 }

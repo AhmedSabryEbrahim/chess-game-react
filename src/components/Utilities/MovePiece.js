@@ -15,6 +15,8 @@ export function getCellValueInMatrix(matrix, x, y) {
 export function movePieceTo(board, source, destination) {
   let value = getCellValueInMatrix(board, source.x, source.y);
 
+  value = value.indexOf("*") == 0 ? value.substring(1, value.length) : value;
+
   if (value && source !== destination) {
     board = changeCellInMatrix(board, source.x, source.y, null);
     board = changeCellInMatrix(board, destination.x, destination.y, value);
@@ -23,20 +25,22 @@ export function movePieceTo(board, source, destination) {
 }
 
 export function preformMove(state, source, destination) {
-  let currValue = getCellValueInMatrix(state.board, source.x, source.y);
   state.board = movePieceTo(state.board, source, destination);
-  state.step += 1;
   let stepDescription =
-    "Move " +
-    state.step +
-    " peice :" +
-    currValue +
-    " from " +
-    state.selected +
-    " to " +
-    destination;
+    "(" +
+    state.selected.x +
+    "," +
+    state.selected.y +
+    ") => (" +
+    destination.x +
+    "," +
+    destination.y +
+    ")";
 
-  console.log(stepDescription);
-  state.history = [...state.history, stepDescription];
+  if (state.step % 2 === 0)
+    state.whiteHistory = state.whiteHistory.concat(stepDescription);
+  else state.blackHistory = state.blackHistory.concat(stepDescription);
+  state.step += 1;
+
   return state;
 }
