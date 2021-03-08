@@ -1,18 +1,27 @@
 import { validateMove } from "./MoveValidation";
 
-export function changeCellInMatrix(matrix, x, y, value) {
+export function changeCellInMatrix(
+  matrix: Array<Array<string>>,
+  x: number,
+  y: number,
+  value: any
+) {
   let row = [...matrix[x]];
   row[y] = value;
   matrix[x] = [...row];
   return matrix;
 }
 
-export function getCellValueInMatrix(matrix, x, y) {
+export function getCellValueInMatrix(
+  matrix: Array<Array<string>>,
+  x: number,
+  y: number
+) {
   let row = [...matrix[x]];
   return row[y];
 }
 
-export function movePieceTo(board, source, destination) {
+export function movePieceTo(board: any, source: any, destination: any) {
   let value = getCellValueInMatrix(board, source.x, source.y);
 
   value = value.indexOf("*") == 0 ? value.substring(1, value.length) : value;
@@ -24,7 +33,7 @@ export function movePieceTo(board, source, destination) {
   return board;
 }
 
-export function preformMove(state, source, destination) {
+export function preformMove(state: any, source: any, destination: any) {
   state.board = movePieceTo(state.board, source, destination);
   let stepDescription =
     "(" +

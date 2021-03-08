@@ -8,8 +8,8 @@ export const Piece = {
   EMPTY: null,
 };
 
-export function getPieceInfo(value) {
-  let piece = Piece.EMPTY;
+export function getPieceInfo(value: any) {
+  let piece: any = Piece.EMPTY;
   let color = null;
   let selected = false;
 
@@ -47,7 +47,7 @@ export function getPieceInfo(value) {
   return [selected, color, piece];
 }
 
-export function getKingPos(board, color) {
+export function getKingPos(board: any, color: any): any {
   let kingPos = null;
 
   return kingPos;

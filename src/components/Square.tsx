@@ -1,15 +1,19 @@
-import React from "react";
 import { getPieceInfo } from "./Utilities/PieceUtil";
+import { ChessSquare } from "./Utilities/ChessTypes";
 import Piece from "./Piece";
 
-const Square = ({ value, squareColor, onClick }) => {
+const Square: React.FunctionComponent<ChessSquare> = ({
+  content,
+  color,
+  action,
+}) => {
   let piece = null;
   let pieceColor = null;
   let selectedSquare = false;
-  let squareClassName = ` squares ${squareColor}square`;
+  let squareClassName = ` squares ${color}square`;
 
-  if (value) {
-    let [selected, _pieceColor, pieceValue] = getPieceInfo(value);
+  if (content) {
+    let [selected, _pieceColor, pieceValue] = getPieceInfo(content);
     piece = pieceValue;
     selectedSquare = selected;
     pieceColor = _pieceColor;
@@ -19,7 +23,7 @@ const Square = ({ value, squareColor, onClick }) => {
   }
 
   return (
-    <button className={squareClassName} onClick={onClick}>
+    <button className={squareClassName} onClick={action}>
       <Piece piece={piece} color={pieceColor} />
     </button>
   );

@@ -1,5 +1,10 @@
 import { Piece } from "./PieceUtil";
-export function validatePieceMove(source, destination, color, piece) {
+export function validatePieceMove(
+  source: any,
+  destination: any,
+  color: any,
+  piece: any
+) {
   switch (piece) {
     case Piece.PAWN:
       return validPawnMoven(source, destination, color);
@@ -14,7 +19,7 @@ export function validatePieceMove(source, destination, color, piece) {
   }
 }
 
-function validPawnMoven(source, destination, color) {
+function validPawnMoven(source: any, destination: any, color: any) {
   console.log(source.x, source.y, destination.x, destination.y);
   if (source.y !== destination.y) return false;
   if (color === "black") {
