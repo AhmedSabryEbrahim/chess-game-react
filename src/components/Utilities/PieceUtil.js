@@ -1,4 +1,4 @@
-const Piece = {
+export const Piece = {
   KING: "K",
   Queen: "Q",
   ROOK: "R",

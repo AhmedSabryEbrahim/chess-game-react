@@ -1,23 +1,27 @@
 import React from "react";
 import { getPieceInfo } from "./Utilities/PieceUtil";
 
-const Square = ({ value, color, onClick }) => {
-  let style = { backgroundColor: color };
+const Square = ({ value, squareColor, onClick }) => {
   let squareValue = value;
   let selectedSquare = false;
+  let squareClassName = ` squares ${squareColor}square`;
+  let pieceClassName = null;
 
   if (value) {
     let [selected, pieceColor, pieceValue] = getPieceInfo(value);
 
-    style = { backgroundColor: color, color: pieceColor };
     squareValue = pieceValue;
     selectedSquare = selected;
+    pieceClassName = `${pieceColor}piece`;
   }
-  const className = selectedSquare === true ? `selected squares ` : `squares`;
+  squareClassName =
+    selectedSquare === true ? `selected ${squareClassName} ` : squareClassName;
+
+  console.log(squareClassName);
 
   return (
-    <button style={style} className={className} onClick={onClick}>
-      {squareValue}
+    <button className={squareClassName} onClick={onClick}>
+      <div className={pieceClassName}>{squareValue}</div>
     </button>
   );
 };

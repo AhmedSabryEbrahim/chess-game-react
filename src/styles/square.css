@@ -1,0 +1,18 @@
+.squares {
+  background: #d4d4d4;
+  border: none;
+  font-size: 3rem;
+  cursor: pointer;
+  outline: none;
+}
+
+.blacksquare {
+  background: #66946b;
+}
+.whitesquare {
+  background: #9eb49f;
+}
+
+.selected {
+  background: #485d69;
+}

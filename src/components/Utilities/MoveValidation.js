@@ -1,18 +1,16 @@
+import { validatePieceMove } from "./MovePieceValidation";
 import { getCellValueInMatrix } from "./MovePiece";
 import { getPieceInfo } from "./PieceUtil";
 
 export function validateMove(board, source, destination, stepNumber) {
-  const [color, peice] = getPieceInfo(
+  const [selected, color, peice] = getPieceInfo(
     getCellValueInMatrix(board, source.x, source.y)
   );
-
   if (!peice) return false;
-
   if (notValidTurn(stepNumber, color)) return false;
-
   if (notValidMove(board, source, destination, color, peice)) return false;
 
-  return true;
+  return validatePieceMove(source, destination, color, peice);
 }
 
 export function validateSelect(board, source, stepNumber) {

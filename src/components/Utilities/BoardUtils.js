@@ -6,11 +6,11 @@ export function renderBoard(board, onClick) {
   board.map((row, i) => {
     row.map((tile, j) => {
       let index = i * 8 + j;
-      let color = (i + j) % 2 === 0 ? "dark-gray" : "gray";
+      let color = (i + j) % 2 === 0 ? "black" : "white";
       let square = (
         <Square
           key={index}
-          color={color}
+          squareColor={color}
           value={tile}
           onClick={() => onClick({ x: i, y: j })}
         />

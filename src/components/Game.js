@@ -10,14 +10,30 @@ import Board from "./Board";
 
 function reducer(state, { x, y }) {
   let currValue = getCellValueInMatrix(state.board, x, y);
+  console.log(x, y, currValue);
 
   if (state.selected) {
     if (validateMove(state.board, state.selected, { x, y }, state.step)) {
       preformMove(state, state.selected, { x, y });
     }
+    currValue = getCellValueInMatrix(
+      state.board,
+      state.selected.x,
+      state.selected.y
+    );
+    if (currValue && currValue.indexOf("*") === 0) {
+      currValue = currValue.substring(1, currValue.length);
+      state.board = changeCellInMatrix(
+        state.board,
+        state.selected.x,
+        state.selected.y,
+        currValue
+      );
+    }
     state.selected = null;
   } else if (validateSelect(state.board, { x, y }, state.step)) {
-    state.board = changeCellInMatrix(state.board, x, y, "*" + currValue);
+    currValue = currValue.indexOf("*") < 0 ? "*" + currValue : currValue;
+    state.board = changeCellInMatrix(state.board, x, y, currValue);
     state.selected = { x, y };
   } else state.selected = null;
 

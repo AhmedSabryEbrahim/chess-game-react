@@ -1,0 +1,22 @@
+.history {
+  width: 200px;
+  height: 600px;
+  border: 0.1rem solid #000000;
+  background: rgb(134, 151, 144);
+  color: #002508;
+  font-size: 1rem;
+}
+.whitehistory {
+  margin-right: 1rem;
+}
+
+.blackhistory {
+  margin-left: 1rem;
+}
+
+.title {
+  margin-left: 1.3rem;
+  font-size: 1.5rem;
+  color: #140606;
+  font-weight: 700;
+}
