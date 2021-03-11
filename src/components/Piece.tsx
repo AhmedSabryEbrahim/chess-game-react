@@ -1,7 +1,8 @@
-import { ChessPiece } from "./Utilities/ChessTypes";
+import { ChessPiece } from "./classes/ChessPiece";
 
-const Piece: React.FunctionComponent<ChessPiece> = ({ piece, color }) => {
-  return <div className={`${color}piece`}>{piece}</div>;
+
+const Piece: React.FunctionComponent<{piece: ChessPiece}> = ({piece}) => {
+  return <>{piece.renderPiece()}</>;
 };
 
 export default Piece;
