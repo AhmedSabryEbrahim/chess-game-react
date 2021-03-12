@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 const Board: React.FunctionComponent<{
   board: any;

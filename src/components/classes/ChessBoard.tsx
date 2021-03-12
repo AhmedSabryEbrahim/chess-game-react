@@ -1,8 +1,7 @@
 import {Point ,PieceType , ChessColors} from "./PieceUtil";
-import {ChessPiece} from "./ChessPiece";
 import Square from "../Square";
-import Piece from "../Piece";
-import {PieceFactory} from "./ChessPiece";
+import {PieceFactory , ChessPiece} from "./ChessPiece";
+import { MoveValidator } from "./MoveValidation";
 
 export class ChessSquare {
   piece: ChessPiece;
@@ -23,14 +22,16 @@ export class ChessSquare {
 
 export class ChessBoard {
     board: Array<Array<ChessSquare>>;
+    moveValidator: MoveValidator;
     public constructor(){
       this.board = new Array(8).fill(new Array(8).fill(null));
+      this.moveValidator =new MoveValidator(this.board);
       this.initizeBoard();
     }
 
   public movePieceTo(piece: ChessPiece,source: Point, destination: Point): ChessBoard{
         this.changeToChessPiece(destination,piece);
-        this.changeToChessPiece(source, PieceFactory.createPiece(PieceType.EMPTY,ChessColors.EMPTY));
+        this.changeToChessPiece(source, PieceFactory.createPiece(PieceType.EMPTY,ChessColors.EMPTY,this.moveValidator));
         return this;
     }
 
@@ -81,19 +82,19 @@ export class ChessBoard {
           for(let j=0;j<8;j++){
               let color = (i + j) % 2 === 0 ? ChessColors.BLACK : ChessColors.WHITE;
               let pieceColor: ChessColors = i < 2 ?ChessColors.BLACK : ChessColors.WHITE;
-              let piece = PieceFactory.createPiece(PieceType.EMPTY ,pieceColor);
+              let piece = PieceFactory.createPiece(PieceType.EMPTY ,pieceColor, this.moveValidator);
               
               if(i === 1|| i=== 6)
-                 piece = PieceFactory.createPiece(PieceType.PAWN , pieceColor);
+                 piece = PieceFactory.createPiece(PieceType.PAWN , pieceColor, this.moveValidator);
               else if(i===0 || i===7){
-                if(j===0) piece = PieceFactory.createPiece(PieceType.ROOK , pieceColor);
-                else if(j===1) piece = PieceFactory.createPiece(PieceType.NIGHT , pieceColor);
-                else if(j===2) piece = PieceFactory.createPiece(PieceType.BISHOP , pieceColor);
-                else if(j===3) piece = PieceFactory.createPiece(PieceType.QUEEN , pieceColor);
-                else if(j===4) piece = PieceFactory.createPiece(PieceType.KING , pieceColor);
-                else if(j===5) piece = PieceFactory.createPiece(PieceType.BISHOP , pieceColor);
-                else if(j===6) piece = PieceFactory.createPiece(PieceType.NIGHT , pieceColor);
-                else if(j===7) piece = PieceFactory.createPiece(PieceType.ROOK , pieceColor);
+                if(j===0) piece = PieceFactory.createPiece(PieceType.ROOK , pieceColor, this.moveValidator);
+                else if(j===1) piece = PieceFactory.createPiece(PieceType.NIGHT , pieceColor, this.moveValidator);
+                else if(j===2) piece = PieceFactory.createPiece(PieceType.BISHOP , pieceColor, this.moveValidator);
+                else if(j===3) piece = PieceFactory.createPiece(PieceType.QUEEN , pieceColor, this.moveValidator);
+                else if(j===4) piece = PieceFactory.createPiece(PieceType.KING , pieceColor, this.moveValidator);
+                else if(j===5) piece = PieceFactory.createPiece(PieceType.BISHOP , pieceColor, this.moveValidator);
+                else if(j===6) piece = PieceFactory.createPiece(PieceType.NIGHT , pieceColor, this.moveValidator);
+                else if(j===7) piece = PieceFactory.createPiece(PieceType.ROOK , pieceColor, this.moveValidator);
               }
               let point = new Point(i,j);
               let chessSquare = new ChessSquare(color,point,piece,null,false);

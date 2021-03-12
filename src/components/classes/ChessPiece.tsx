@@ -1,22 +1,22 @@
 import {Point, PieceType , ChessColors} from "./PieceUtil";
-import {MoveValidator , MoveType} from "./Move";
+import {MoveValidator , Direction} from "./MoveValidation";
 export class PieceFactory{
-  public static createPiece(pieceName: PieceType, pieceColor: ChessColors): ChessPiece{
+  public static createPiece(pieceName: PieceType, pieceColor: ChessColors, moveValidator: MoveValidator): ChessPiece{
     switch(pieceName){
       case PieceType.KING:
-        return new King(pieceColor);
+        return new King(pieceColor, moveValidator);
       case PieceType.QUEEN:
-          return new Queen(pieceColor);
+          return new Queen(pieceColor, moveValidator);
       case PieceType.ROOK:
-        return new Rook(pieceColor);
+        return new Rook(pieceColor, moveValidator);
       case PieceType.BISHOP:
-          return new Bishop(pieceColor);
+          return new Bishop(pieceColor, moveValidator);
       case PieceType.NIGHT:
-        return new Night(pieceColor); 
+        return new Night(pieceColor, moveValidator); 
       case PieceType.PAWN:
-          return new Pawn(pieceColor);
+          return new Pawn(pieceColor, moveValidator);
       default:
-        return new Empty();    
+        return new Empty(moveValidator);    
     }
   }
 }
@@ -24,100 +24,99 @@ export class PieceFactory{
 export abstract class ChessPiece {
     pieceName: PieceType;
     color: ChessColors;
-    public constructor(piece: PieceType , color: ChessColors){
+    moveValidator: MoveValidator
+    public constructor(piece: PieceType , color: ChessColors,moveValidator: MoveValidator){
       this.pieceName = piece;
       this.color = color;
+      this.moveValidator = moveValidator;
     }
     public isEmpty(): boolean{
       return this.pieceName.indexOf(PieceType.EMPTY) >= 0 || 
              this.color.indexOf(ChessColors.EMPTY) >= 0;
     }
-    validMove(curr: Point , destination: Point): boolean{
-      console.log("VALIDATION PARENT-"+this.pieceName);
+    validPieceMove(curr: Point , destination: Point): boolean{
       return false;
-    }
-    public renderPiece(): any {
-      return  <div className={`${this.color}piece`}>{this.pieceName}</div>;
     }
 }
 
 
 class King extends ChessPiece {
-  constructor(color:ChessColors){
-    super(PieceType.KING , color);
+  constructor(color:ChessColors, moveValidator: MoveValidator){
+    super(PieceType.KING , color, moveValidator);
   }
-  validMove(curr: Point , destination: Point): boolean{
-    if(MoveValidator.isValidDiagonalMove(curr, destination , 1 , MoveType.ANY)||
-       MoveValidator.isValidHorizontalMove(curr, destination , 1 , MoveType.ANY)||
-       MoveValidator.isValidVerticalMove(curr, destination , 1 , MoveType.ANY))
+  validPieceMove(curr: Point , destination: Point): boolean{
+    if(this.moveValidator.isValidDiagonalMove(curr, destination , 1 , Direction.ANY)||
+       this.moveValidator.isValidHorizontalMove(curr, destination , 1 , Direction.ANY)||
+       this.moveValidator.isValidVerticalMove(curr, destination , 1 , Direction.ANY))
        return true; 
     return false;
   }
 }
 
 class Queen extends ChessPiece {
-  constructor(color:ChessColors){
-    super(PieceType.QUEEN , color);
+  constructor(color:ChessColors, moveValidator: MoveValidator){
+    super(PieceType.QUEEN , color, moveValidator);
   }
-  validMove(curr: Point , destination: Point): boolean{
-    if(MoveValidator.isValidDiagonalMove(curr, destination , 7 , MoveType.ANY)||
-       MoveValidator.isValidHorizontalMove(curr, destination , 7 , MoveType.ANY)||
-       MoveValidator.isValidVerticalMove(curr, destination , 7 , MoveType.ANY))
+  validPieceMove(curr: Point , destination: Point): boolean{
+    if(this.moveValidator.isValidDiagonalMove(curr, destination , 7 , Direction.ANY)||
+       this.moveValidator.isValidHorizontalMove(curr, destination , 7 , Direction.ANY)||
+       this.moveValidator.isValidVerticalMove(curr, destination , 7 , Direction.ANY))
        return true; 
-    return super.validMove(curr , destination);
+    return super.validPieceMove(curr , destination);
   }
 }
 
 class Rook extends ChessPiece {
-  constructor(color:ChessColors){
-    super(PieceType.ROOK , color);
+  constructor(color:ChessColors, moveValidator: MoveValidator){
+    super(PieceType.ROOK , color, moveValidator);
   }
-  validMove(curr: Point , destination: Point): boolean{
-      if(MoveValidator.isValidVerticalMove(curr, destination , 7 , MoveType.ANY)||
-         MoveValidator.isValidHorizontalMove(curr, destination , 7 , MoveType.ANY))
+  validPieceMove(curr: Point , destination: Point): boolean{
+      if(this.moveValidator.isValidVerticalMove(curr, destination , 7 , Direction.ANY)||
+      this.moveValidator.isValidHorizontalMove(curr, destination , 7 , Direction.ANY))
        return true; 
-       return super.validMove(curr , destination);
+       return super.validPieceMove(curr , destination);
   }
 }
 
 class Bishop extends ChessPiece {
-  constructor(color:ChessColors){
-    super(PieceType.BISHOP , color);
+  constructor(color:ChessColors, moveValidator: MoveValidator){
+    super(PieceType.BISHOP , color, moveValidator);
   }
-  validMove(curr: Point , destination: Point): boolean{
-      if( MoveValidator.isValidDiagonalMove(curr, destination , 7 , MoveType.ANY))
+  validPieceMove(curr: Point , destination: Point): boolean{
+      if( this.moveValidator.isValidDiagonalMove(curr, destination , 7 , Direction.ANY))
        return true; 
-      return super.validMove(curr , destination);
+      return super.validPieceMove(curr , destination);
   }
 }
 
 
 class Night extends ChessPiece {
-  constructor(color:ChessColors){
-    super(PieceType.NIGHT , color);
+  constructor(color:ChessColors, moveValidator: MoveValidator){
+    super(PieceType.NIGHT , color, moveValidator);
   }
-  validMove(curr: Point , destination: Point): boolean{
-      if( MoveValidator.isValidNightMove(curr, destination))
+  validPieceMove(curr: Point , destination: Point): boolean{
+      if( this.moveValidator.isValidNightMove(curr, destination))
        return true; 
-      return super.validMove(curr , destination);
+      return super.validPieceMove(curr , destination);
   }
 }
 
 
 class Pawn extends ChessPiece {
-  constructor(color:ChessColors){
-    super(PieceType.PAWN , color);
+  constructor(color:ChessColors, moveValidator: MoveValidator){
+    super(PieceType.PAWN , color, moveValidator);
   }
-  validMove(curr: Point , destination: Point): boolean{
+  validPieceMove(curr: Point , destination: Point): boolean{
     console.log("VALIDATION -"+this.pieceName);
-    if(MoveValidator.isValidVerticalMove(curr, destination , 2, (this.color === ChessColors.WHITE )? MoveType.FORWARD: MoveType.BACKWARD))
+    let direction: Direction = (this.color === ChessColors.WHITE )? Direction.FORWARD: Direction.BACKWARD;
+    if(this.moveValidator.isValidVerticalMove(curr, destination , 2,direction))
        return true;    
     return false;
   }
 }
 
 class Empty extends ChessPiece {
-  constructor(){
-    super(PieceType.EMPTY , ChessColors.EMPTY);
+  constructor(moveValidator: MoveValidator){
+    super(PieceType.EMPTY , ChessColors.EMPTY,moveValidator);
   }
 }

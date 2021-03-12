@@ -1,12 +1,13 @@
 import Piece from "./Piece";
 import {ChessSquare} from "./classes/ChessBoard";
-import { Point } from "./classes/PieceUtil";
 
-const Square: React.FunctionComponent<{square: ChessSquare}>= (square) => {
-  let squareClassName = ` squares ${square.square.color}square`;
+const Square: React.FunctionComponent<{square: ChessSquare}>= ({square}) => {
+  let squareClassName = ` squares ${square.color}square`;
+  if(square.selected)
+    squareClassName= squareClassName.concat(" selected");
   return (
-    <button className={squareClassName} onClick={()=>square.square.action.action(square.square.point)}>
-      <Piece piece={square.square.piece} />
+    <button className={squareClassName} onClick={()=>square.action.action(square.point)}>
+      <Piece piece={square.piece} />
     </button>
   );
 };

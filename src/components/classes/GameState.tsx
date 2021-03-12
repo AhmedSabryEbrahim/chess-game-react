@@ -16,12 +16,11 @@ export class GameState {
 
     public preformMove(source: Point, destination: Point): GameState {
         let piece = this.board.getChessPiece(source);
-        if(piece.validMove(source , destination)){
+        if(piece.validPieceMove(source , destination)){
             this.board= this.board.movePieceTo(piece, source, destination);
-            this.step += 1;
             this.history.addStep(this.moveAsMessage(source, destination),this.step);
             this.unSelectSqaure();
-            console.log("Moved!!");
+            this.step += 1;
         }
         return this;
     }
