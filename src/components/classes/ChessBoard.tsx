@@ -67,19 +67,6 @@ export class ChessBoard {
     this.board[square.point.x] = [...row];
   }
 
-  public renderBoard(action: Function): Array<any> {
-    let grid: Array<any> = [];
-
-    this.board.map((row: Array<ChessSquare>, i: number) => {
-      row.map((chessSquare: ChessSquare, j: number) => {
-        chessSquare.action = { action };
-        let square = <Square key={i * 8 + j} square={chessSquare} />;
-        grid = [...grid, square];
-      });
-    });
-    return grid;
-  }
-
   public getChessPiece(point: Point) {
     let row = [...this.board[point.x]];
     return row[point.y].piece;

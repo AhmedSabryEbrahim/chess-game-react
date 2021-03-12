@@ -1,4 +1,4 @@
-import { useReducer, useState } from "react";
+import { useReducer } from "react";
 import Board from "./Board";
 import History from "./History";
 import { GameState } from "./classes/GameState";
@@ -15,25 +15,11 @@ const Game = () => {
     (state: GameState, point: Point) => GameState
   >(reducer, new GameState());
 
-  function handleSelect(point: Point) {
-    if (point.isValidPoint()) dispatch(point);
-    setboard(state.board.renderBoard(handleSelect));
-    setWhitetHistory(state.history.renderWhiteHistory());
-    setBlackHistory(state.history.renderBlackHistory());
-    return;
-  }
-
-  const [board, setboard] = useState<Array<any>>(() =>
-    state.board.renderBoard(handleSelect)
-  );
-  const [whiteHistoryList, setWhitetHistory] = useState<Array<any>>([]);
-  const [blackHistoryList, setBlackHistory] = useState<Array<any>>([]);
-
   return (
     <div className="body">
-      <History history={whiteHistoryList} color={ChessColors.WHITE} />
-      <Board board={board} />
-      <History history={blackHistoryList} color={ChessColors.BLACK} />
+      <History history={state.history.whiteHistory} color={ChessColors.WHITE} />
+      <Board board={state.board} action={dispatch} />
+      <History history={state.history.blackHistory} color={ChessColors.BLACK} />
     </div>
   );
 };
