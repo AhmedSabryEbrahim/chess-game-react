@@ -1,30 +1,17 @@
-import { getPieceInfo } from "./Utilities/PieceUtil";
-import { ChessSquare } from "./Utilities/ChessTypes";
 import Piece from "./Piece";
+import { ChessSquare } from "./classes/ChessBoard";
 
-const Square: React.FunctionComponent<ChessSquare> = ({
-  content,
-  color,
-  action,
+const Square: React.FunctionComponent<{ square: ChessSquare }> = ({
+  square,
 }) => {
-  let piece = null;
-  let pieceColor = null;
-  let selectedSquare = false;
-  let squareClassName = ` squares ${color}square`;
-
-  if (content) {
-    let [selected, _pieceColor, pieceValue] = getPieceInfo(content);
-    piece = pieceValue;
-    selectedSquare = selected;
-    pieceColor = _pieceColor;
-  }
-  if (selectedSquare === true) {
-    squareClassName = `selected ${squareClassName} `;
-  }
-
+  let squareClassName = ` squares ${square.color}square`;
+  if (square.selected) squareClassName = squareClassName.concat(" selected");
   return (
-    <button className={squareClassName} onClick={action}>
-      <Piece piece={piece} color={pieceColor} />
+    <button
+      className={squareClassName}
+      onClick={() => square.action.action(square.point)}
+    >
+      <Piece piece={square.piece} />
     </button>
   );
 };

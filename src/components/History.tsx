@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { ChessColors } from "./Utilities/ChessTypes";
+import React from "react";
+import { ChessColors } from "./classes/PieceUtil";
 
 const History: React.FunctionComponent<{
   history: any;

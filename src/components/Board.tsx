@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import Square from "./Square";
+import React from "react";
 
 const Board: React.FunctionComponent<{
   board: any;
